@@ -4,6 +4,14 @@ A read-only JSON API and website for cars sold in Australia since 2000.
 Each car has an AI-generated picture and colour options, with a recoloured
 picture for each colour.
 
+## Website on GitHub Pages
+
+The site is published to GitHub Pages by `.github/workflows/pages.yml` on every
+push to `main`: `scripts/build-static.js` writes `site/` (the website plus the
+API as static JSON files under `site/api/`), and Pages serves it. On Pages the
+website reads those JSON files and filters in the browser; the live server
+uses the query-string endpoints below.
+
 ## Run it
 
 ```bash
