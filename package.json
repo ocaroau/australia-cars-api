@@ -8,7 +8,9 @@
   "scripts": {
     "start": "node src/server.js",
     "test": "node --test test/api.test.js",
-    "build:data": "node scripts/build-data.js"
+    "build:data": "node scripts/build-data.js",
+    "build:web": "npm --prefix web ci && npm --prefix web run build",
+    "dev:web": "npm --prefix web run dev"
   },
   "license": "UNLICENSED",
   "private": true,

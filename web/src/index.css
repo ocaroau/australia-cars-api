@@ -1,0 +1,151 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@fontsource/barlow-semi-condensed/600.css";
+@import "@fontsource/barlow-semi-condensed/700.css";
+@import "@fontsource-variable/geist-mono";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  Palette: asphalt neutrals + Australian road-sign green.
+  Contrast (WCAG): fg 16.5:1, muted 5.8:1 on background / 6.3:1 on card,
+  primary 5.7:1, white on primary 6.2:1. Dark: fg 16.4:1, muted 7.3:1,
+  primary 8.2:1, ink on primary 8.1:1.
+*/
+:root {
+  --radius: 0.75rem;
+  --background: #f5f6f3;
+  --foreground: #141816;
+  --card: #ffffff;
+  --card-foreground: #141816;
+  --popover: #ffffff;
+  --popover-foreground: #141816;
+  --primary: #00703c;
+  --primary-foreground: #ffffff;
+  --secondary: #eaece7;
+  --secondary-foreground: #141816;
+  --muted: #eaece7;
+  --muted-foreground: #5a625d;
+  --accent: #e4e8e1;
+  --accent-foreground: #141816;
+  --destructive: #c4321f;
+  --border: #dde0da;
+  --input: #d3d7d0;
+  --ring: #00703c;
+  --signal: #e0a015;
+  --floor: rgba(20, 24, 22, 0.16);
+  --stage: linear-gradient(180deg, #ffffff 0%, #eef0eb 100%);
+}
+
+.dark {
+  --background: #0d100f;
+  --foreground: #eceeea;
+  --card: #161a18;
+  --card-foreground: #eceeea;
+  --popover: #1a1f1c;
+  --popover-foreground: #eceeea;
+  --primary: #3fbf7f;
+  --primary-foreground: #06140d;
+  --secondary: #1f2421;
+  --secondary-foreground: #eceeea;
+  --muted: #1f2421;
+  --muted-foreground: #9aa29d;
+  --accent: #242b27;
+  --accent-foreground: #eceeea;
+  --destructive: #f0614d;
+  --border: #262c29;
+  --input: #2e3531;
+  --ring: #3fbf7f;
+  --signal: #f2b53a;
+  --floor: rgba(0, 0, 0, 0.55);
+  --stage: linear-gradient(180deg, #1b201d 0%, #121614 100%);
+}
+
+@theme inline {
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-display: "Barlow Semi Condensed", system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, "SF Mono", Menlo, monospace;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-signal: var(--signal);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+}
+
+/* The "showroom floor": a soft stage with a contact shadow under each car. */
+.stage {
+  background: var(--stage);
+  position: relative;
+  isolation: isolate;
+}
+.stage::after {
+  content: "";
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  bottom: 14%;
+  height: 12%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--floor), transparent);
+  z-index: -1;
+}
+
+/* Floating dock: the only translucent surface, on the functional layer. */
+.dock-glass {
+  background: color-mix(in oklab, var(--popover) 72%, transparent);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+}
+@media (prefers-reduced-transparency: reduce) {
+  .dock-glass {
+    background: var(--popover);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+@media (prefers-contrast: more) {
+  :root { --muted-foreground: #3f4642; --border: #b9beb6; }
+  .dark { --muted-foreground: #c2c8c4; --border: #4a524d; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

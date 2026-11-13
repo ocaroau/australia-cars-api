@@ -23,7 +23,15 @@ function intParam(value, name, { min, max, fallback }) {
   return n;
 }
 
-function createApp(store, { publicDir = path.join(__dirname, "..", "public") } = {}) {
+// Vite fingerprints everything under assets/, so those files never change.
+function immutableAssets(res, file) {
+  if (file.includes(`${path.sep}assets${path.sep}`)) res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+}
+
+function createApp(
+  store,
+  { publicDir = path.join(__dirname, "..", "public"), webDir = path.join(__dirname, "..", "web", "dist") } = {},
+) {
   const app = express();
   app.disable("x-powered-by");
 
@@ -103,6 +111,8 @@ function createApp(store, { publicDir = path.join(__dirname, "..", "public") } =
   });
 
   app.use("/api", api);
+  // The website (built by `npm run build:web`) and the car images.
+  app.use(express.static(webDir, { maxAge: "1h", setHeaders: immutableAssets }));
   app.use(express.static(publicDir, { maxAge: "1d" }));
 
   app.use((req, res) => res.status(404).json({ error: "not found" }));

@@ -29,6 +29,9 @@ function main() {
   const store = loadDataset(path.join(ROOT, "data", "cars.json"));
   fs.rmSync(OUT, { recursive: true, force: true });
   copyDir(path.join(ROOT, "public"), OUT);
+  const web = path.join(ROOT, "web", "dist");
+  if (!fs.existsSync(path.join(web, "index.html"))) throw new Error("web/dist missing: run `npm run build:web` first");
+  copyDir(web, OUT);
 
   const all = store.search({ limit: store.size, page: 1 }).data;
   const meta = {

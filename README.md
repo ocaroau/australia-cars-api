@@ -17,6 +17,7 @@ uses the query-string endpoints below.
 ```bash
 npm install
 npm run build:data -- /path/to/car-images   # only when the dataset changes
+npm run build:web                           # builds the website into web/dist
 npm start                                   # http://localhost:3000
 npm test
 ```
@@ -30,6 +31,13 @@ docker run -p 3000:3000 australia-cars-api
 
 Pushes to `main` build and publish an image to `ghcr.io/<owner>/australia-cars-api`
 (see `.github/workflows/docker.yml`). Pull requests and pushes run the tests (`ci.yml`).
+
+## Website
+
+`web/` is a Vite + React + Tailwind app built with shadcn/ui components. It
+follows the system light/dark appearance, with a Day / Night override in the
+dock. For live reload, run `npm start` in one terminal and `npm run dev:web` in
+another (Vite proxies `/api` and `/images` to port 3000).
 
 ## API
 
